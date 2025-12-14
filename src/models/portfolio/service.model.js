@@ -1,0 +1,81 @@
+import mongoose from 'mongoose';
+import {v4 as uuidv4} from 'uuid';
+
+const ServiceModel = new mongoose.Schema({
+    serviceId:{
+        type:String,
+        default:uuidv4,
+        unique:true,
+    },
+    userid:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"authentications",
+        required:true
+    },
+    title:{
+        type:String,
+        required:true
+    },
+    icon:{
+        type:String,
+        required:true
+    },
+    shortDescription:{
+        type:String,
+        required:true
+    },
+    fullDescription:{
+        type:String,
+        required:true
+    },
+    features:{
+        type:[String],
+        required:true
+    },
+    technologies:{
+        type:[
+            {
+                name:{
+                    type:String,
+                    required:true
+                },
+                category:{
+                    type:String,
+                    required:true
+                }
+            }
+        ]
+    },
+    deliverable:{
+        type:String,
+        required:true
+    },
+    pricing:{
+        type:[{
+            startingPrice:{
+                type:Number,
+                required:true
+            },
+            priceType:{
+                type:String,
+                required:true
+            },
+            description:{
+                type:String,
+                required:true
+            }
+        }],
+        required:true
+    },
+    timeline:{
+        type:String,
+        required:true
+    },
+    featured:{
+        type:Boolean,
+        required:true
+    },
+})
+
+const ServiceSchema = mongoose.models.services || mongoose.model("service", ServiceModel);
+export default ServiceSchema;
