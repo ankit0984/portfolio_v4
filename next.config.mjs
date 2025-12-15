@@ -8,15 +8,7 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: "aperture.ai"
-            },
-            {
-                protocol: 'https',
-                hostname: "www.dpgpolytechnic.com"
-            },            {
-                protocol: 'https',
-                hostname: ""
-            },
-
+            }
         ]
     },
     allowedDevOrigins:['*.ngrok-free.app']
