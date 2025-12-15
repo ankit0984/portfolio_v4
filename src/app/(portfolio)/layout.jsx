@@ -4,6 +4,8 @@ import {ThemeProvider} from "next-themes";
 import {ModeToggle} from "@/components/DarkModeToggle";
 import {FloatingDock} from "@/components/floatingDock";
 import {SidebarInset, SidebarProvider} from "@/components/ui/sidebar";
+import { GoogleAnalytics } from "nextjs-google-analytics";
+
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -44,6 +46,7 @@ export default function RootLayout({children}) {
             </SidebarProvider>
         </ThemeProvider>
         </body>
+        <GoogleAnalytics gaId="G-41SGPKXLB8"/>
         </html>
     );
 }
