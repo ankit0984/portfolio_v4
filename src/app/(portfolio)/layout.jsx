@@ -4,7 +4,6 @@ import {ThemeProvider} from "next-themes";
 import {ModeToggle} from "@/components/DarkModeToggle";
 import {FloatingDock} from "@/components/floatingDock";
 import {SidebarInset, SidebarProvider} from "@/components/ui/sidebar";
-import { GoogleAnalytics } from "nextjs-google-analytics";
 import Script from "next/script";
 
 
