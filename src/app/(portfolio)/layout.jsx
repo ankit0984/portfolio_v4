@@ -5,6 +5,7 @@ import {ModeToggle} from "@/components/DarkModeToggle";
 import {FloatingDock} from "@/components/floatingDock";
 import {SidebarInset, SidebarProvider} from "@/components/ui/sidebar";
 import { GoogleAnalytics } from "nextjs-google-analytics";
+import Script from "next/script";
 
 
 const geistSans = Geist({
@@ -25,6 +26,21 @@ export const metadata = {
 export default function RootLayout({children}) {
     return (
         <html lang="en" suppressHydrationWarning={true}>
+        <head>
+            <Script async src="https://www.googletagmanager.com/gtag/js?id=G-41SGPKXLB8"></Script>
+            <Script id='googletagmanager'>
+                {
+                    `
+                    window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', 'G-41SGPKXLB8');
+                    `
+                }
+            </Script>
+            <title></title>
+        </head>
         <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
@@ -46,7 +62,6 @@ export default function RootLayout({children}) {
             </SidebarProvider>
         </ThemeProvider>
         </body>
-        <GoogleAnalytics gaId="G-41SGPKXLB8"/>
         </html>
     );
 }

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import ContactForm from "@/components/portfolio/contactSection/contactForm";
-// import { ContactForm } from "./ContactForm";
 
 const profile = {
     email: "ankit.kumar.ai@example.com", // add @domain
