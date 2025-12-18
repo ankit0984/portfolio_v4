@@ -1,12 +1,14 @@
 import mongoose from "mongoose";
 
 const StatsSchema = new mongoose.Schema({
-    period: String, // daily | monthly | yearly | geo
+    period: String, // weekly | monthly
     year: Number,
     month: Number,
-    country: String,
-    city: String,
-    visitors: Number,
+    week: Number,
+    visitors: {
+        type: Number,
+        default: 0
+    },
     updatedAt: Date
 });
 
@@ -14,8 +16,7 @@ StatsSchema.index({
     period: 1,
     year: 1,
     month: 1,
-    country: 1,
-    city: 1
+    week: 1
 });
 
 const StatsModel = mongoose.models.Stats ||

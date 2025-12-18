@@ -5,11 +5,13 @@ export async function getGeo(ip) {
 
         return {
             country: data.country_name || "Unknown",
+            region: data.region || data.region_code || "Unknown",
             city: data.city || "Unknown"
         };
-    } catch (err) {
+    } catch {
         return {
             country: "Unknown",
+            region: "Unknown",
             city: "Unknown"
         };
     }
