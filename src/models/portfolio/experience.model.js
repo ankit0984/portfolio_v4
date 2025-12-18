@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import isURL from "validator/lib/isURL";
+import SectionsSchema from "@/models/portfolio/sections.model";
 
 const experienceModel = new mongoose.Schema({
     experienceId: {
@@ -99,5 +100,40 @@ const experienceModel = new mongoose.Schema({
 }, {
     timestamps: true
 });
+
+// todo: added post hook (experimental)
+
+experienceModel.post("save", async function () {
+    await SectionsSchema.findOneAndUpdate(
+        { userid: this.userid },
+        { $pull: { experience: { id: this.experienceId } } }
+    );
+
+    await SectionsSchema.findOneAndUpdate(
+        { userid: this.userid },
+        {
+            $addToSet: {
+                experience: {
+                    id: this.experienceId,
+                    company: this.company,
+                    position: this.position,
+                },
+            },
+        },
+        { upsert: true }
+    );
+});
+
+experienceModel.post("findOneAndDelete", async function (doc) {
+    if (!doc) return;
+
+    await Sections.findOneAndUpdate(
+        { userid: doc.userid },
+        { $pull: { experience: { id: doc.experienceId } } }
+    );
+});
+
+
+
 const ExperienceSchema = mongoose.models.experience || mongoose.model("experience",experienceModel);
 export default ExperienceSchema;

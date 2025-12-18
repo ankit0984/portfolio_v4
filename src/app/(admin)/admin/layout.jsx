@@ -3,8 +3,8 @@ import "./admin.css";
 import {ThemeProvider} from "next-themes";
 import {ModeToggle} from "@/components/DarkModeToggle";
 import {SidebarInset, SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar";
-import {AppSidebar} from "@/components/app-sidebar";
-import {SiteHeader} from "@/components/site-header";
+import {AppSidebar} from "@/components/sidebar/app-sidebar";
+import {SiteHeader} from "@/components/sidebar/site-header";
 
 
 const geistSans = Geist({
@@ -23,7 +23,6 @@ export const metadata = {
 };
 
 export default function RootLayout({children}) {
-    let dataLayer;
     return (
         <html lang="en" suppressHydrationWarning={true}>
         <body

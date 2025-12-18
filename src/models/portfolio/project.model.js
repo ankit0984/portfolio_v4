@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { v4 as uuidv4 } from "uuid";
+import SectionsSchema from "@/models/portfolio/sections.model";
 
 const projectModel = new mongoose.Schema({
     projectId: {
@@ -41,5 +42,41 @@ const projectModel = new mongoose.Schema({
         required:[true,"provide project link"]
     },
 })
+
+
+// todo: added post hook (experimental)
+
+projectModel.post("save", async function () {
+    await SectionsSchema.findOneAndUpdate(
+        { userid: this.userid },
+        { $pull: { projects: { id: this.projectId } } }
+    );
+
+    await SectionsSchema.findOneAndUpdate(
+        { userid: this.userid },
+        {
+            $addToSet: {
+                projects: {
+                    id: this.projectId,
+                    title: this.title,
+                    category: this.category,
+                },
+            },
+        },
+        { upsert: true }
+    );
+});
+
+projectModel.post("findOneAndDelete", async function (doc) {
+    if (!doc) return;
+
+    await SectionsSchema.findOneAndUpdate(
+        { userid: doc.userid },
+        { $pull: { projects: { id: doc.projectId } } }
+    );
+});
+
+
+
 const ProjectSchema = mongoose.models.projects || mongoose.model("projects",projectModel);
 export default ProjectSchema;

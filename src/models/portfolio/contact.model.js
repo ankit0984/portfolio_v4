@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import HeroModel from "@/models/portfolio/hero.model";
+import SectionsSchema from "@/models/portfolio/sections.model";
 
 
-const contactSchema = new mongoose.Schema({
+const contactModel = new mongoose.Schema({
     contactId: {
         type: String,
         default: uuidv4, // pass the function, mongoose will call it per-doc
@@ -41,7 +42,7 @@ const contactSchema = new mongoose.Schema({
 });
 
 // pre-validate: fill email and heroRef/heroId from Hero doc
-contactSchema.pre("validate", async function (next) {
+contactModel.pre("validate", async function (next) {
     try {
         // Find hero by userid. If you need to find by heroId instead,
         // change the filter to { heroId: someValue }.
@@ -77,5 +78,21 @@ contactSchema.pre("validate", async function (next) {
     }
 });
 
-const ContactModel = mongoose.models.Contact || mongoose.model("Contact", contactSchema);
-export default ContactModel;
+// todo: added post hook (experimental)
+
+
+contactModel.post("save", async function () {
+    await SectionsSchema.findOneAndUpdate(
+        { userid: this.userid },
+        {
+            contact: {
+                id: this.contactId,
+                email: this.email,
+            },
+        },
+        { upsert: true }
+    );
+});
+
+const ContactSchema = mongoose.models.Contact || mongoose.model("Contact", contactModel);
+export default ContactSchema;

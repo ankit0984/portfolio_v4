@@ -67,6 +67,7 @@
 // src/models/portfolio/hero.model.js
 import mongoose from "mongoose";
 import { v4 as uuidv4 } from "uuid";
+import SectionsSchema from "@/models/portfolio/sections.model";
 
 const heroModel = new mongoose.Schema({
     heroId: {
@@ -112,6 +113,20 @@ const heroModel = new mongoose.Schema({
     },
 
     imageUrl: { type: String, required: true },
+});
+
+// todo: added post hook (experimental)
+heroModel.post("save", async function () {
+    await SectionsSchema.findOneAndUpdate(
+        { userid: this.userid },
+        {
+            hero: {
+                id: this.heroId,
+                name: this.fullName,
+            },
+        },
+        { upsert: true }
+    );
 });
 
 const HeroSchema = mongoose.models.Hero || mongoose.model("Hero", heroModel);

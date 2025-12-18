@@ -2,7 +2,7 @@
 
 import { SignInButton, useUser } from "@clerk/nextjs";
 import { MessageSquare, Sparkles } from "lucide-react";
-import { useSidebar } from "./ui/sidebar";
+import { useSidebar } from "../ui/sidebar";
 
 function SidebarToggle() {
     const { toggleSidebar, open, isMobile, openMobile } = useSidebar();

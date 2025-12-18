@@ -1,14 +1,3 @@
-// import ResetEmail from '@/components/reset-email';
-// import React from 'react'
-
-// export default function page() {
-//   return (
-// 		<div className='flex min-h-screen items-center justify-center bg-gradient-to-l from-stone-500 via-neutral-400 to-gray-500'>
-// 			<ResetEmail />
-// 		</div>
-// 	);
-// }
-import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import PasswordResetForm from "@/components/authComponent/reset-email/reset-email";

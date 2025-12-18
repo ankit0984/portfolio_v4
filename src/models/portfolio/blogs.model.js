@@ -108,7 +108,6 @@ blogsModel.pre("insertMany", async function (next, docs) {
             let counter = 1;
 
             // avoid clashes with db and within this batch
-            // eslint-disable-next-line no-await-in-loop
             while (
                 usedSlugs.has(slug) ||
                 await mongoose.model("blogs").findOne({ slug })
@@ -125,6 +124,65 @@ blogsModel.pre("insertMany", async function (next, docs) {
         next(err);
     }
 });
+
+// todo: added post hooks (projecting to Sections)
+import SectionsSchema from "@/models/portfolio/sections.model";
+
+/* ADD / UPDATE (single save) */
+blogsModel.post("save", async function () {
+    // remove any stale entry then add the current one
+    await SectionsSchema.updateOne(
+        { userid: this.userid },
+        { $pull: { blogs: { id: this.blogId } } }
+    );
+
+    await SectionsSchema.updateOne(
+        { userid: this.userid },
+        {
+            $addToSet: {
+                blogs: {
+                    id: this.blogId,
+                    title: this.title,
+                },
+            },
+        },
+        { upsert: true }
+    );
+});
+
+/* ADD / UPDATE (bulk insertMany) */
+blogsModel.post("insertMany", async function (docs) {
+    if (!Array.isArray(docs) || docs.length === 0) return;
+
+    const byUser = new Map();
+    for (const d of docs) {
+        const key = String(d.userid);
+        if (!byUser.has(key)) byUser.set(key, []);
+        byUser.get(key).push({ id: d.blogId, title: d.title });
+    }
+
+    await Promise.all(
+        [...byUser.entries()].map(([userid, items]) =>
+            SectionsSchema.updateOne(
+                { userid },
+                { $addToSet: { blogs: { $each: items } } },
+                { upsert: true }
+            )
+        )
+    );
+});
+
+/* REMOVE */
+blogsModel.post("findOneAndDelete", async function (doc) {
+    if (!doc) return;
+
+    await SectionsSchema.updateOne(
+        { userid: doc.userid },
+        { $pull: { blogs: { id: doc.blogId } } }
+    );
+});
+
+
 
 const BlogSchema =
     mongoose.models.blogs || mongoose.model("blogs", blogsModel);

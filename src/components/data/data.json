@@ -1,0 +1,78 @@
+[
+  {
+    "id": 1,
+    "header": "User_Id",
+    "type": "User data",
+    "userId": "19"
+
+  },
+  {
+    "id": 2,
+    "header": "Hero",
+    "type": "Hero Section",
+    "userId": "19"
+
+  },
+  {
+    "id": 3,
+    "header": "About",
+    "type": "About Section",
+    "userId": "19"
+
+  },
+  {
+    "id": 4,
+    "header": "Skills",
+    "type": "Skill Section",
+    "userId": "19"
+
+  },
+  {
+    "id": 5,
+    "header": "Experience",
+    "type": "Experience Section",
+    "userId": "19"
+
+  },
+  {
+    "id": 6,
+    "header": "Education",
+    "type": "Education Section",
+    "userId": "19"
+
+  },
+  {
+    "id": 7,
+    "header": "Project",
+    "type": "Project Section",
+    "userId": "19"
+
+  },
+  {
+    "id": 8,
+    "header": "Certification",
+    "type": "Certification Section",
+    "userId": "19"
+
+  },
+  {
+    "id": 9,
+    "header": "Achievement",
+    "type": "AchievementSection",
+    "userId": "19"
+
+  },
+  {
+    "id": 10,
+    "header": "Achievement",
+    "type": "AchievementSection",
+    "userId": "19"
+
+  },  {
+    "id": 11,
+    "header": "Service",
+    "type": "Service Section",
+  "userId": "19"
+
+}
+]

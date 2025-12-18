@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import {v4 as uuidv4} from "uuid";
+import SectionsSchema from "@/models/portfolio/sections.model";
 
 const achievementModel = new mongoose.Schema({
     achievementId:{
@@ -44,6 +45,37 @@ const achievementModel = new mongoose.Schema({
         required:true
     }
 })
+
+// todo: added post hook (experimental)
+achievementModel.post("save", async function () {
+    await SectionsSchema.findOneAndUpdate(
+        { userid: this.userid },
+        { $pull: { achievements: { id: this.achievementId } } }
+    );
+
+    await SectionsSchema.findOneAndUpdate(
+        { userid: this.userid },
+        {
+            $addToSet: {
+                achievements: {
+                    id: this.achievementId,
+                    title: this.title,
+                },
+            },
+        },
+        { upsert: true }
+    );
+});
+
+achievementModel.post("findOneAndDelete", async function (doc) {
+    if (!doc) return;
+
+    await SectionsSchema.findOneAndUpdate(
+        { userid: doc.userid },
+        { $pull: { achievements: { id: doc.achievementId } } }
+    );
+});
+
 
 const AchievementSchema = mongoose.models.achievement || mongoose.model("achievement", achievementModel);
 export default AchievementSchema;

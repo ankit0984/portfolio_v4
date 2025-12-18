@@ -1,6 +1,19 @@
+import {SectionCards} from "@/components/section-cards";
+import {ChartAreaInteractive} from "@/components/chart-area-interactive";
+import DataTable from "@/components/sidebar/data-table";
+import data from "@/components/data/data.json";
+
 export default function Page(){
     return(
-        <div className='flex items-center justify-center px-6 p-4 mt-6 mx-auto'>dashboard</div>
+        <div className='min-h-screen pt-4'>
+            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+                <SectionCards/>
+                <div className="px-4 lg:px-6">
+                    <ChartAreaInteractive />
+                </div>
+                <DataTable data={data} />
+            </div>
+        </div>
     )
 
 }

@@ -5,6 +5,7 @@ import {ModeToggle} from "@/components/DarkModeToggle";
 import {FloatingDock} from "@/components/floatingDock";
 import {SidebarInset, SidebarProvider} from "@/components/ui/sidebar";
 import Script from "next/script";
+import VisitorTracker from "@/components/VisitorTracker";
 
 
 const geistSans = Geist({
@@ -23,6 +24,8 @@ export const metadata = {
 };
 
 export default function RootLayout({children}) {
+
+
     return (
         <html lang="en" suppressHydrationWarning={true}>
         <head>
@@ -49,6 +52,7 @@ export default function RootLayout({children}) {
             enableSystem
             disableTransitionOnChange
         >
+            <VisitorTracker/>
             <SidebarProvider>
                 <SidebarInset>{children}</SidebarInset>
                 <FloatingDock/>
