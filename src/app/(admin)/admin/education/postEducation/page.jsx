@@ -1,4 +1,4 @@
-import PostEdu from "../../../components/education/postEdu";
+import PostEdu from "@/components/admin/education/postEdu";
 
 export default function page(){
     return(

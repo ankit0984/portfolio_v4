@@ -15,9 +15,9 @@ import * as React from "react";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {ChevronDownIcon} from "lucide-react";
 import { Calendar } from "@/components/ui/calendar"
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import {useState} from "react";
 import TechnologiesField from "./technologies";
+import {NativeSelect, NativeSelectOption} from "@/components/ui/native-select";
 
 
 
