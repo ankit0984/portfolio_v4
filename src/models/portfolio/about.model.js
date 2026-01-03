@@ -36,5 +36,5 @@ aboutModel.post("save", async function () {
         { upsert: true }
     );
 });
-const AboutSchema = mongoose.models.about || mongoose.model("aboutschema",aboutModel);
+const AboutSchema = mongoose.models.about || mongoose.model("about",aboutModel);
 export default AboutSchema;

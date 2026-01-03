@@ -60,6 +60,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
+import SectionDrawer from "@/components/sidebar/section-drawer";
 
 
 
@@ -84,6 +85,8 @@ function DragHandle({
   );
 }
 
+
+
 const columns = [
   {
     id: "drag",
@@ -103,7 +106,7 @@ const columns = [
     header: "Section Type",
     cell: ({ row }) => (
       <div className="w-32">
-        <Badge variant="outline" className="text-muted-foreground px-1.5">
+        <Badge variant="outline" className="text-muted-foreground px-1.5 capitalize">
           {row.original.type}
         </Badge>
       </div>
@@ -112,6 +115,18 @@ const columns = [
   {
     accessorKey: "userId",
     header:"Access UserId",
+    cell: ({ row }) => row.original.userid || row.original.userId || "N/A"
+  },
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => (
+      <SectionDrawer item={row.original}>
+        <Button variant="ghost" size="sm">
+          View Details
+        </Button>
+      </SectionDrawer>
+    ),
   },
 ]
 
@@ -144,7 +159,13 @@ function DraggableRow({
 function DataTable({
   data: initialData
 }) {
-  const [data, setData] = React.useState(() => initialData)
+
+  const [data, setData] = React.useState(initialData)
+
+  React.useEffect(() => {
+    setData(initialData)
+  }, [initialData])
+
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
     React.useState({})
@@ -173,7 +194,7 @@ function DataTable({
       columnFilters,
       pagination,
     },
-    getRowId: (row) => row.id.toString(),
+    getRowId: (row) => row.id,
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -364,8 +385,11 @@ function TableCellViewer({
 }) {
 
   return (
-      <div className="text-foreground w-fit px-0 text-left">
-        {item.header}
-      </div>
+      <SectionDrawer item={item}>
+        <div className="text-foreground w-fit px-0 text-left hover:underline cursor-pointer">
+          {item.header}
+        </div>
+      </SectionDrawer>
   );
 }
+

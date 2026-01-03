@@ -37,7 +37,9 @@ export async function GET() {
     const last3MonthsData = await StatsModel.find({
         period: "monthly",
         $or: lastThreeMonths
-    }).select("year month visitors -_id");
+    })
+        .sort({ year: 1, month: 1 })
+        .select("year month visitors -_id");
 
     // 4️⃣ Total visitors (lifetime)
     const totalAgg = await StatsModel.aggregate([

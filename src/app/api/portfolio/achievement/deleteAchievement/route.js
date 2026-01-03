@@ -3,11 +3,24 @@ import {connectionDb} from "@/db/config";
 import EnsureAdmin from "@/utils/admin/ensureAdmin";
 import AchievementSchema from "@/models/portfolio/achievement.model";
 import {ApiError} from "@/utils/apiError";
+import {JwtTokenData} from "@/utils/tokendata";
 
 export async function DELETE(request) {
     try {
         await connectionDb()
-        await EnsureAdmin(request)
+
+
+        await EnsureAdmin(request);
+        if (!EnsureAdmin) {
+            const message = `you are not authorized to delete achievement. Please try again later.`;
+            throw ApiError.from(
+                request,
+                404,
+                message,
+                [ "User token missing or invalid" ]
+            );
+        }
+
         const reqBody = await request.json()
         const {searchParams}= new URL(request.url);
         const userid=searchParams.get("userid");

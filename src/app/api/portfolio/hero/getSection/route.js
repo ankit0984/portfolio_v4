@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectionDb } from "@/db/config.js";
-import HeroSchema from "@/models/portfolio/hero.model.js"; // renamed for clarity
+import HeroSchema from "@/models/portfolio/hero.model.js";
+import {ApiError} from "@/utils/apiError"; // renamed for clarity
 
 export async function GET(request) {
     try {
@@ -35,11 +36,11 @@ export async function GET(request) {
         }
 
         return NextResponse.json({ success: true, data: heroData }, { status: 200 });
-    } catch (error) {
-        console.error("GET /api/hero error:", error);
-        return NextResponse.json(
-            { success: false, error: "Internal server error", details: error.message },
-            { status: 500 }
-        );
+    } catch(error){
+        if (error instanceof ApiError){
+            return NextResponse.json(error.toJSON(),{status:error.statusCode || 401})
+        }
+        const fallbackError = ApiError.from(request,501,error.message || "internal server error")
+        return NextResponse.json( fallbackError.toJSON(),{status:501});
     }
 }

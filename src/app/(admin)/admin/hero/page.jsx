@@ -1,4 +1,4 @@
-import Herocomponent from "@/app/(admin)/admin/hero/herocomponent";
+import Herocomponent from "./herocomponent";
 
 export default function Page(){
     return (

@@ -30,7 +30,6 @@ export async function checkAdminPrivilege(request) {
 		);
 
 		if (!user) {
-			logger.api("⚠️ Invalid token — user not found");
 			return { isAdmin: false, error: "User not found", status: 401 };
 		}
 

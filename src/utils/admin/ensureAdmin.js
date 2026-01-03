@@ -138,4 +138,3 @@ export default async function EnsureAdmin(request) {
         throw ApiError.from(request, 500, err?.message || "Something went wrong during admin verification", [err?.message || "internal_error"], extraMeta);
     }
 }
-

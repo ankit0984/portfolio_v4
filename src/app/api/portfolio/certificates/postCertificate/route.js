@@ -3,6 +3,7 @@ import {connectionDb} from "@/db/config.js";
 import {JwtTokenData} from "@/utils/tokendata.js";
 import {checkAdminPrivilege} from "@/utils/isAdmin.js";
 import CertificateSchema from "@/models/portfolio/certificate.model";
+import {ApiError} from "@/utils/apiError";
 
 export async function POST(request) {
     try {
@@ -49,8 +50,11 @@ export async function POST(request) {
         })
         const savedCertificate = await certificateData.save()
         return NextResponse.json({success: true, certificate: savedCertificate},{status:200});
-    } catch (error) {
-        console.log(error);
-        return NextResponse.json({success: false, error: error});
+    } catch(error){
+        if (error instanceof ApiError){
+            return NextResponse.json(error.toJSON(),{status:error.statusCode || 401})
+        }
+        const fallbackError = ApiError.from(request,501,error.message || "internal server error")
+        return NextResponse.json( fallbackError.toJSON(),{status:501});
     }
 }

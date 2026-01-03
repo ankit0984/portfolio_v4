@@ -3,6 +3,7 @@ import { connectionDb } from "@/db/config";
 import { JwtTokenData } from "@/utils/tokendata.js";
 import { checkAdminPrivilege } from "@/utils/isAdmin.js";
 import AboutSchema from "@/models/portfolio/about.model";
+import {ApiError} from "@/utils/apiError";
 
 export async function PATCH(request) {
     try {
@@ -70,10 +71,11 @@ export async function PATCH(request) {
             { success: true, message: "About data updated", data: updatedAbout },
             { status: 200 }
         );
-    } catch (error) {
-        return NextResponse.json(
-            { success: false, error: error.message },
-            { status: 500 }
-        );
+    } catch(error){
+        if (error instanceof ApiError){
+            return NextResponse.json(error.toJSON(),{status:error.statusCode || 401})
+        }
+        const fallbackError = ApiError.from(request,501,error.message || "internal server error")
+        return NextResponse.json( fallbackError.toJSON(),{status:501});
     }
 }

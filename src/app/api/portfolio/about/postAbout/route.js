@@ -3,36 +3,26 @@ import {connectionDb} from "@/db/config";
 import { JwtTokenData } from "@/utils/tokendata.js";
 import { checkAdminPrivilege } from "@/utils/isAdmin.js";
 import AboutSchema from "@/models/portfolio/about.model";
+import {ApiError} from "@/utils/apiError";
+import EnsureAdmin from "@/utils/admin/ensureAdmin";
 
 
 export async function POST(request){
     try {
         await connectionDb()
-        // token exists?
-        const token = request.cookies.get("token")?.value;
-        if (!token) {
-            return NextResponse.json(
-                { success: false, error: "Invalid token or Unauthorized User" },
-                { status: 401 }
-            );
-        }
-
         // decode token
         const { id: userId } = JwtTokenData(request);
         if (!userId) {
-            return NextResponse.json(
-                { success: false, error: "userid not found" },
-                { status: 401 }
+            const message = `user not found with id "${userId}"`;
+            throw ApiError.from(
+                request,
+                404,
+                message,
+                [ "User token missing or invalid" ]
             );
         }
 
-        // NOTE: only keep this if *only admins* should create hero profiles
-        const adminCheck = await checkAdminPrivilege(request);
-        if (!adminCheck.isAdmin) {
-            const status = adminCheck.status || 403;
-            const error = adminCheck.error || "Access Denied: Admins Only";
-            return NextResponse.json({ success: false, error }, { status });
-        }
+        await EnsureAdmin(request);
 
         const reqBody = await request.json();
         const {title, description} = reqBody;
@@ -48,20 +38,11 @@ export async function POST(request){
         const savedData = await  aboutData.save()
         return NextResponse.json({success:true,message:"data saved",data: savedData}, {status:200});
     }
-    catch (error) {
-        console.error("POST /about error:", error);
-
-        if (error?.name === "ValidationError") {
-            const messages = Object.values(error.errors).map((e) => e.message);
-            return NextResponse.json(
-                { success: false, error: "Validation error", details: messages },
-                { status: 400 }
-            );
+    catch(error){
+        if (error instanceof ApiError){
+            return NextResponse.json(error.toJSON(),{status:error.statusCode || 401})
         }
-
-        return NextResponse.json(
-            { success: false, error: "Internal server error" },
-            { status: 500 }
-        );
+        const fallbackError = ApiError.from(request,501,error.message || "internal server error")
+        return NextResponse.json( fallbackError.toJSON(),{status:501});
     }
 }

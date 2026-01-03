@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { connectionDb } from "@/db/config.js";
 import { JwtTokenData } from "@/utils/tokendata.js";
 import HeroSchema from "@/models/portfolio/hero.model.js";
-import EnsureAdmin from "@/utils/admin/ensureAdmin"; // renamed for clarity
+import EnsureAdmin from "@/utils/admin/ensureAdmin";
+import {ApiError} from "@/utils/apiError"; // renamed for clarity
 
 const ALLOWED_PLATFORMS = ["github", "youtube", "medium", "leetcode"];
 
@@ -85,21 +86,11 @@ export async function POST(request) {
             },
             { status: 201 }
         );
-    } catch (error) {
-        console.error("POST /hero error:", error);
-
-        // Mongoose validation errors -> return meaningful message
-        if (error?.name === "ValidationError") {
-            const messages = Object.values(error.errors).map((e) => e.message);
-            return NextResponse.json(
-                { success: false, error: "Validation error", details: messages },
-                { status: 400 }
-            );
+    } catch(error){
+        if (error instanceof ApiError){
+            return NextResponse.json(error.toJSON(),{status:error.statusCode || 401})
         }
-
-        return NextResponse.json(
-            { success: false, error: "error occurred during POST request" },
-            { status: 500 }
-        );
+        const fallbackError = ApiError.from(request,501,error.message || "internal server error")
+        return NextResponse.json( fallbackError.toJSON(),{status:501});
     }
 }

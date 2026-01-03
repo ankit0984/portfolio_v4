@@ -156,6 +156,7 @@ const expdata = [
 
 
 export default function ExperienceSection() {
+
     return (
         <section id="experience" className="py-28 px-6">
             <div className="container mx-auto max-w-6xl">
@@ -224,8 +225,10 @@ export default function ExperienceSection() {
                                     </div>
 
                                     <div className="flex w-full flex-wrap gap-2 mt-2.5">
-                                        {item.technologies.map((technology) => (
-                                            <Badge variant="secondary" key={technology.category}>{technology.name}</Badge>
+                                        {item.technologies.map((technology, index) => (
+                                            <Badge variant="secondary" key={index}>
+                                                {typeof technology === 'string' ? technology : technology.name}
+                                            </Badge>
                                         ))}
                                     </div>
                                 </div>

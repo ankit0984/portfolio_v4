@@ -3,6 +3,7 @@ import { connectionDb } from "@/db/config";
 import { JwtTokenData } from "@/utils/tokendata";
 import { checkAdminPrivilege } from "@/utils/isAdmin";
 import CertificateSchema from "@/models/portfolio/certificate.model";
+import {ApiError} from "@/utils/apiError";
 
 
 export async function DELETE(request) {
@@ -44,13 +45,11 @@ export async function DELETE(request) {
         const deleteCertificate = await CertificateSchema.findOneAndDelete({ certificationId });
         return NextResponse.json({ success: true, data:deleteCertificate, message: `Successfully deleted certificate ${certificationId}` }, {status:201});
     }
-    catch (error) {
-        console.log(`Exception while doing something: ${error}`);
-
-        return NextResponse.json(
-            { success: false, error: "error occurred during POST request" },
-            { status: 500 }
-        );
-
+    catch(error){
+        if (error instanceof ApiError){
+            return NextResponse.json(error.toJSON(),{status:error.statusCode || 401})
         }
+        const fallbackError = ApiError.from(request,501,error.message || "internal server error")
+        return NextResponse.json( fallbackError.toJSON(),{status:501});
+    }
 }

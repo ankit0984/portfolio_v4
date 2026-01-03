@@ -1,0 +1,20 @@
+# Copyright Broadcom, Inc. All Rights Reserved.
+# SPDX-License-Identifier: APACHE-2.0
+
+services:
+  mongodb:
+    image: bitnami/mongodb:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./database/mongodb_data:/bitnami/mongodb
+    restart: unless-stopped
+    environment:
+      - MONGODB_USERNAME=ankit
+      - MONGODB_PASSWORD=password123
+      - MONGODB_ROOT_PASSWORD=admin123
+      - MONGODB_DATABASE=portfolio
+
+volumes:
+  mongodb_data:
+    driver: local

@@ -438,12 +438,19 @@ export default function ServiceSection() {
 
                                       {service.fullDescription && (
                                           <div className="prose prose-sm dark:prose-invert mb-6">
-                                              <PortableText   value={[
-                                                  {
-                                                      _type: 'block',
-                                                      children: [{ _type: 'span', text: String(service.fullDescription) }],
-                                                  },
-                                              ]} />
+                                              <PortableText
+                                                  value={Array.isArray(service.fullDescription) ? service.fullDescription : [
+                                                      {
+                                                          _type: 'block',
+                                                          children: [{ _type: 'span', text: String(service.fullDescription) }],
+                                                      },
+                                                  ]}
+                                                  components={{
+                                                      marks: {
+                                                          span: ({children}) => <span className="inline-block">{children}</span>,
+                                                      },
+                                                  }}
+                                              />
                                           </div>
                                       )}
 

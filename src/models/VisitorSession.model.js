@@ -11,8 +11,9 @@ const VisitorSessionSchema = new mongoose.Schema({
     }
 });
 
+// src/models/VisitorSession.model.js
 VisitorSessionSchema.index(
-    { ipHash: 1, year: 1, month: 1 },
+    { ipHash: 1, year: 1, month: 1, week: 1 }, // Added week
     { unique: true }
 );
 

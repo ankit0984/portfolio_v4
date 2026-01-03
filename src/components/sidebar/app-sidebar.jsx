@@ -50,11 +50,11 @@ const data = {
       items: [
         {
           title: "get data",
-          url: "#",
+          url: "/admin/hero",
         },
         {
           title: "post data",
-          url: "#",
+          url: "/admin/hero/postData",
         },
         {
           title: "update data",
@@ -69,15 +69,15 @@ const data = {
       items: [
         {
           title: "Get Method",
-          url: "#",
+          url: "/admin/about",
         },
         {
           title: "Post Method",
-          url: "#",
+          url: "/admin/about/post",
         },
         {
           title: "Update Method",
-          url: "#",
+          url: "/admin/about/update",
         },
       ],
     },
@@ -111,11 +111,11 @@ const data = {
       items: [
         {
           title: "Get Method",
-          url: "#",
+          url: "/admin/experience",
         },
         {
           title: "Post Method",
-          url: "#",
+          url: "/admin/experience/postExperience",
         },
         {
           title: "Update Method",
@@ -134,11 +134,11 @@ const data = {
       items: [
         {
           title: "Get Method",
-          url: "#",
+          url: "/admin/education",
         },
         {
           title: "Post Method",
-          url: "#",
+          url: "/admin/education/postEducation",
         },
         {
           title: "Update Method",
@@ -180,11 +180,11 @@ const data = {
       items: [
         {
           title: "Get Method",
-          url: "#",
+          url: "/admin/certification/get_certification",
         },
         {
           title: "Post Method",
-          url: "#",
+          url: "/admin/certification/post_certification",
         },
         {
           title: "Update Method",
@@ -249,7 +249,7 @@ const data = {
       items: [
         {
           title: "Get Method",
-          url: "#",
+          url: "/admin/blogs",
         },
         {
           title: "Post Method",

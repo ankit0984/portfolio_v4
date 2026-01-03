@@ -3,6 +3,7 @@ import { connectionDb } from "@/db/config";
 import { JwtTokenData } from "@/utils/tokendata";
 import { checkAdminPrivilege } from "@/utils/isAdmin";
 import CertificateSchema from "@/models/portfolio/certificate.model";
+import {ApiError} from "@/utils/apiError";
 export async function POST(request) {
     try {
         await connectionDb();
@@ -102,33 +103,11 @@ export async function POST(request) {
             },
             { status: 201 }
         );
-    } catch (error) {
-        console.error("POST /certification error:", error);
-
-        // 🔹 Handle validation errors (e.g. bad dates etc.)
-        if (error?.name === "ValidationError") {
-            const messages = Object.values(error.errors).map((e) => e.message);
-            return NextResponse.json(
-                { success: false, error: "Validation error", details: messages },
-                { status: 400 }
-            );
+    } catch(error){
+        if (error instanceof ApiError){
+            return NextResponse.json(error.toJSON(),{status:error.statusCode || 401})
         }
-
-        // 🔹 Handle duplicate key via unique index (if you add one on credentialId)
-        if (error?.code === 11000) {
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: "Credential already exists",
-                    keyValue: error.keyValue,
-                },
-                { status: 409 }
-            );
-        }
-
-        return NextResponse.json(
-            { success: false, error: "error occurred during POST request" },
-            { status: 500 }
-        );
+        const fallbackError = ApiError.from(request,501,error.message || "internal server error")
+        return NextResponse.json( fallbackError.toJSON(),{status:501});
     }
 }
