@@ -75,5 +75,3 @@ export const fetchCertificationData = async () => {
         throw new Error("Failed to load experience data");
     }
 }
-
-export { getHeroData };
