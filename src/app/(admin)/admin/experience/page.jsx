@@ -1,5 +1,5 @@
-import ExpSection from "../../components/experience/expSection";
+import ExperienceSection from "@/components/admin/experience/expSection";
 
 export default function page(){
-    return <ExpSection/>
+    return <ExperienceSection/>
 }

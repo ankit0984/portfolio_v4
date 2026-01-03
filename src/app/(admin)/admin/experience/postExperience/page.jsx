@@ -1,4 +1,4 @@
-import PostExp from "../../../components/experience/postExp/postExp";
+import PostExp from "@/components/admin/experience/postExp/postExp";
 
 export default function page(){
     return(
