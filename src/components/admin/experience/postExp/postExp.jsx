@@ -17,7 +17,7 @@ import {ChevronDownIcon} from "lucide-react";
 import { Calendar } from "@/components/ui/calendar"
 import {useState} from "react";
 import TechnologiesField from "./technologies";
-import {NativeSelect, NativeSelectOption} from "@/components/ui/native-select.jsx";
+import {NativeSelect, NativeSelectOption} from "@/components/ui/native-select";
 
 
 
