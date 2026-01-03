@@ -3,22 +3,33 @@ import axios from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const CATEGORY_ID = process.env.NEXT_PUBLIC_CATEGORY_ID;
+const HERO_ID = process.env.NEXT_PUBLIC_HERO_ID;
 
-async function getHeroData() {
+export const getHeroData=async ()=> {
 
-    const res = await fetch(
-        `${BASE_URL}/api/portfolio/hero/getSection?heroId=${process.env.HERO_ID}`,
-        {
-            next: { revalidate: 300 }, // cache for 5 min
-        }
-    );
-
-    if (!res.ok) {
-        throw new Error("Failed to fetch Hero data");
+    try {
+        const res = await axios.get(`${BASE_URL}/api/portfolio/hero/getSection`, {
+            params: {
+                heroId: HERO_ID
+            }
+        });
+        // Return only the data part
+        return res.data?.data ?? [];
+    } catch (err) {
+        console.error("Error fetching experience:", err);
+        throw new Error("Failed to load experience data");
     }
+}
 
-    const json = await res.json();
-    return json?.data ?? null;
+export const fetchAboutData = async ()=>{
+    try {
+        const res = await axios.get(`${BASE_URL}/api/portfolio/about/getAbout`);
+        // Return only the data part
+        return res.data?.data ?? [];
+    } catch (err) {
+        console.error("Error fetching experience:", err);
+        throw new Error("Failed to load experience data");
+    }
 }
 
 export const fetchExperienceData = async () => {

@@ -1,34 +1,34 @@
-import React from "react";
+'use client'
+import React, {useEffect, useState} from "react";
+import {fetchAboutData, fetchEducationData} from "@/apiData/api";
 
-
-async function getAboutData() {
-    const res = await fetch(
-        'http://localhost:3000/api/portfolio/about/getAbout',
-        {
-            next: { revalidate: 300 }, // cache for 5 minutes
-        }
-    );
-
-    if (!res.ok) {
-        throw new Error("Failed to fetch About section data");
-    }
-
-    const json = await res.json();
-
-    if (!json?.success || !json?.data) {
-        return null;
-    }
-
-    // API may return array or object → normalize
-    return Array.isArray(json.data) ? json.data[0] : json.data;
-}
 
 /* ---------------- Component ---------------- */
 
-export default async function AboutSection() {
-    const data = await getAboutData();
+export default function AboutSection() {
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    useEffect(() => {
+        // Call the API function directly
+        fetchAboutData()
+            .then((data) => {
+                // Logic after success
+                setData(data);
+            })
+            .catch((err) => {
+                // Logic after error
+                setError(err.message);
+            })
+            .finally(() => {
+                // Logic that runs in both cases
+                setLoading(false);
+            });
+    }, []);
 
-    if (!data) return null;
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>{error}</p>;
+
 
     return (
         <section id="about" className="py-20 px-6">

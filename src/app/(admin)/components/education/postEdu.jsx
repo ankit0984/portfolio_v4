@@ -18,16 +18,6 @@ import { Calendar } from "@/components/ui/calendar"
 import {NativeSelect, NativeSelectOption} from "@/components/ui/native-select";
 import {useState} from "react";
 
-// {
-//     "achievement": [
-//     "Introduction to NoSQL Databases",
-//     "Generative AI: Introduction and Applications",
-//     "Introduction to Machine Learning",
-//     "DevOps on AWS"
-// ],
-//     "description": "Finished my 12th in the Science stream, which sparked my curiosity for computers and technology — the first step in my journey toward becoming a software engineer."
-// }
-
 
 
 export default function PostEdu() {
