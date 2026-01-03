@@ -15,7 +15,7 @@ import * as React from "react";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {ChevronDownIcon} from "lucide-react";
 import { Calendar } from "@/components/ui/calendar"
-import {NativeSelect, NativeSelectOption} from "../../../../../components/ui/native-select";
+import {NativeSelect, NativeSelectOption} from "../../../ui/native-select";
 import {useState} from "react";
 import TechnologiesField from "./technologies";
 
@@ -25,15 +25,7 @@ export default function PostExp() {
     const [technologies, setTechnologies] = useState([]);
 
 
-    function handleSubmit(e) {
-        e.preventDefault();
 
-        const payload = {
-            technologies,
-        };
-
-        console.log(payload);
-    }
     // 1. Separate states for Start Date
     const [startDate, setStartDate] = React.useState(null);
     const [startOpen, setStartOpen] = React.useState(false);
@@ -44,7 +36,7 @@ export default function PostExp() {
     return (
 
         <div
-            className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+            className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card px-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
             <Card className="@container/card ">
                 <CardHeader>
                     <CardTitle>Experience post data</CardTitle>
